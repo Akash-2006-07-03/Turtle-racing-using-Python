@@ -1,0 +1,67 @@
+'''project for Turtle racing'''
+
+import turtle
+import time
+import random
+
+WIDTH=500
+HEIGHT=500
+
+COLORS=['red','green','blue','orange','black','yellow','pink','brown','cyan','magenta']
+
+
+def get_no_of_turtules():
+    while True:
+        answer=input("How many turtles would you like to race (2-10) : ")
+        if answer.isdigit():
+            answer=int(answer)
+            if 2<= answer <=10:
+                break
+            else:
+                print("Racers must be between (2-10).")
+        else:
+            print("Kindly enter in integers!.")
+    return answer
+
+def make_screen():
+    screen=turtle.Screen()
+    screen.setup(WIDTH,HEIGHT)
+    screen.title('Turtle racing...!')
+
+def make_turtles(colours):
+    racers=[]
+    spacingx=WIDTH//(len(colours)+1)
+    for i,color in enumerate(colours):
+        racer=turtle.Turtle()
+        racer.shape('turtle')
+        racer.color(color)
+        racer.left(90)
+        racer.penup()
+        racer.setpos(-WIDTH//2 + (i+1) * spacingx,-HEIGHT//2 + 40)
+        racer.pendown()
+        racers.append(racer)
+    return racers
+
+def race_turtles(colours):
+    turtles=make_turtles(colours)
+
+    distance=random.randrange(1,20)
+    while True:
+        for racer in turtles:
+            racer.forward(distance)
+            x,y=racer.pos()
+            if y >= HEIGHT//2 -30:
+                return colours[turtles.index(racer)]
+            
+
+
+def main():
+    players=get_no_of_turtules()
+    make_screen()
+    random.shuffle(COLORS)
+    colours=COLORS[:players]
+    winning=race_turtles(colours)
+    print(f"The turtle with colour {winning} won")
+    time.sleep(5)
+
+main()
